@@ -32,10 +32,8 @@ The request processing flow is designed to mimic how modern AI platforms orchest
 
 Client Request
 │
-▼
 FastAPI API Endpoint
 │
-▼
 Workflow Manager
 │
 ├── Data Agent
