@@ -32,16 +32,12 @@ The request processing flow is designed to mimic how modern AI platforms orchest
 
 Client Request
 │
-
 FastAPI API Endpoint
 │
-
 Workflow Manager
 │
-
 ├── Data Agent
 │ │
-
 │ └── Retrieves context from vector database
 │
 ├── Insight Agent
