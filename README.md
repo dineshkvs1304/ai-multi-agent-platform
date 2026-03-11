@@ -1,264 +1,269 @@
 # AI Multi-Agent Business Intelligence Platform
 
-## Overview
+A modular AI system that uses multiple specialized agents to analyze business data and generate structured insights.  
+The platform demonstrates how modern AI systems can coordinate multiple reasoning steps using LLMs, retrieval pipelines, and API orchestration.
 
-This repository contains a production-style AI system designed to analyze business data and generate meaningful strategic insights automatically.
-
-The system is built around a multi-agent architecture where different AI agents collaborate to process information step by step. Each agent focuses on a specific responsibility such as analyzing data, extracting insights, or generating a final report.
-
-Instead of sending a single prompt to a large language model, the workflow orchestrates multiple specialized agents. This approach improves structure, reasoning quality, and maintainability of the system.
-
-The platform exposes a REST API built with FastAPI and integrates with a high-performance LLM inference provider. It also uses Retrieval-Augmented Generation (RAG) so that agents can retrieve contextual knowledge from a vector database before generating responses.
-
-The entire system can run locally or inside a Docker container, making it easy to reproduce and deploy.
+The system is built using **FastAPI**, **Groq LLM inference**, and a **Retrieval-Augmented Generation (RAG) pipeline**.
 
 ---
 
-## Features
+# Overview
 
-- Multi-agent AI pipeline
-- Retrieval-Augmented Generation (RAG)
-- Vector database for contextual knowledge
-- FastAPI backend with automatic API documentation
-- Structured JSON outputs suitable for automation
-- Modular project architecture
-- Docker containerization for deployment
+This project implements a multi-agent architecture designed to simulate how an AI-powered analytics platform could operate in a real business environment.
+
+Instead of relying on a single prompt, the workflow is divided into specialized AI agents. Each agent focuses on a specific responsibility such as data interpretation, insight generation, and report creation.
+
+This separation allows the system to produce more structured and explainable outputs while keeping the architecture modular and extensible.
 
 ---
 
-## System Architecture
+# System Architecture
 
-The request processing flow is designed to mimic how modern AI platforms orchestrate different reasoning components.
+The request flows through several layers in the system:
 
-Client Request
-│
-FastAPI API Endpoint
-│
-Workflow Manager
-│
-├── Data Agent
-│ │
-│ └── Retrieves context from vector database
-│
-├── Insight Agent
-│ │
-│ └── Generates strategic insights
-│
-└── Report Agent
-│
-└── Produces final structured report
+User Request  
+↓  
+FastAPI Endpoint  
+↓  
+Workflow Manager (Orchestrator)  
+↓  
+Data Analysis Agent  
+↓  
+Insight Generation Agent  
+↓  
+Report Generation Agent  
+↓  
+Structured JSON Response
 
-
-Each agent operates independently and focuses on a specific stage of reasoning.
+The system also integrates a retrieval layer that fetches contextual information before the agents generate responses.
 
 ---
 
-## Agent Responsibilities
+# Key Components
 
-### Data Agent
+### API Layer
+The FastAPI server exposes endpoints that allow external applications to interact with the AI agent pipeline.
 
-The Data Agent performs the initial analysis of the input data. It extracts key findings, identifies trends, and determines possible causes behind the observations.
+### Workflow Manager
+The workflow manager coordinates how requests move between different agents.
 
-If relevant information exists in the vector database, the agent retrieves additional context before generating the analysis.
+### AI Agents
+The system contains three main agents:
 
----
+**Data Agent**  
+Responsible for interpreting and summarizing raw input data.
 
-### Insight Agent
+**Insight Agent**  
+Generates higher-level insights and patterns from the analysis.
 
-The Insight Agent interprets the analytical output and converts it into strategic insights. It focuses on identifying business implications and potential opportunities based on the analysis.
+**Report Agent**  
+Compiles the final structured report.
 
----
+### Retrieval Layer (RAG)
+A vector retrieval system fetches relevant contextual information before generating responses.
 
-### Report Agent
-
-The Report Agent produces a structured business report summarizing the findings and providing practical recommendations.
-
----
-
-## Technology Stack
-
-| Component | Technology |
-|----------|------------|
-| Backend API | FastAPI |
-| LLM Inference | Groq |
-| Embeddings | Sentence Transformers |
-| Vector Database | ChromaDB |
-| Language | Python |
-| Containerization | Docker |
+### LLM Integration
+The agents use Groq LLM inference to generate reasoning outputs.
 
 ---
 
-## Project Structure
+# Project Structure
+
+```
 ai-multi-agent-platform
 │
 ├── app
-│ ├── agents
-│ │ ├── data_agent.py
-│ │ ├── insight_agent.py
-│ │ └── report_agent.py
-│ │
-│ ├── services
-│ │ ├── workflow_manager.py
-│ │ ├── retriever.py
-│ │ ├── vector_store.py
-│ │ └── llm_client.py
-│ │
-│ └── main.py
+│   ├── agents
+│   │   ├── data_agent.py
+│   │   ├── insight_agent.py
+│   │   └── report_agent.py
+│   │
+│   ├── services
+│   │   ├── workflow_manager.py
+│   │   ├── retriever.py
+│   │   ├── vector_store.py
+│   │   └── llm_client.py
+│   │
+│   └── main.py
 │
 ├── requirements.txt
 ├── Dockerfile
 └── README.md
+```
 
-
-This modular structure keeps agents, services, and infrastructure components separated, making the project easier to maintain and extend.
+The project is organized into separate layers so that agents, infrastructure, and services remain modular and easy to maintain.
 
 ---
 
-## Running the Project Locally
+# Running the Project Locally
 
-### 1. Clone the repository
+## 1. Clone the repository
+
+```
 git clone https://github.com/dineshkvs1304/ai-multi-agent-platform.git
-
 cd ai-multi-agent-platform
-
+```
 
 ---
 
-### 2. Create a virtual environment
-python -m venv venv
+## 2. Create a virtual environment
 
+```
+python -m venv venv
+```
 
 Activate the environment.
 
 Windows:
+
+```
 venv\Scripts\activate
+```
 
+Mac/Linux:
 
-Mac / Linux:
+```
 source venv/bin/activate
-
+```
 
 ---
 
-### 3. Install dependencies
+## 3. Install dependencies
+
+```
 pip install -r requirements.txt
-
+```
 
 ---
 
-### 4. Configure environment variables
+## 4. Configure environment variables
 
-Create a `.env` file in the project root.
+Create a `.env` file in the root directory and add your Groq API key.
+
+```
 GROQ_API_KEY=your_api_key_here
-
+```
 
 ---
 
-### 5. Start the API server
+## 5. Start the server
+
+```
 uvicorn app.main:app --reload
+```
 
+The API will be available at:
 
-The API will start running at:
+```
 http://127.0.0.1:8000
+```
 
+Interactive documentation:
 
----
-
-### 6. Open API documentation
-
-FastAPI automatically generates interactive documentation.
-
-Open:
+```
 http://127.0.0.1:8000/docs
-
-
-You can test API endpoints directly from this interface.
+```
 
 ---
 
-## Running the Project with Docker
+# Running with Docker
 
-Docker allows the application to run inside a containerized environment.
+Build the Docker image:
 
-### Build the Docker image
+```
 docker build -t ai-agent-system .
+```
 
+Run the container:
 
----
-
-### Run the container
+```
 docker run -p 8000:8000 -e GROQ_API_KEY=your_api_key_here ai-agent-system
+```
 
+The API will be accessible at:
 
----
-
-### Access the API
-
-After the container starts, open:
+```
 http://localhost:8000/docs
-
+```
 
 ---
 
-## Example API Request
+# Example API Request
 
 Endpoint:
-POST /run-task
 
+```
+POST /run-task
+```
 
 Example request body:
 
 ```json
 {
   "task": "business analysis",
-  "data": "Revenue increased from 1.2 million to 1.8 million dollars this quarter while marketing spending increased by 20 percent"
+  "data": "Revenue increased from 1.2 million to 1.8 million dollars this quarter while marketing spending increased by 25 percent"
 }
+```
 
-Example Response
+---
+
+# Example Response
 
 The API returns structured JSON generated by the AI agent pipeline.
 
+```json
 {
-  "analysis": {...},
-  "insights": {...},
-  "report": {...}
+  "analysis": "...",
+  "insights": "...",
+  "report": "..."
 }
+```
 
+---
 
-Design Decisions
+# Design Decisions
 
-Several design principles guided the development of this system.
+Several architectural choices were made while building this system.
 
-Agent Specialization
+### Agent Specialization
+Instead of using a single prompt, the workflow is divided into multiple specialized agents.
 
-Instead of relying on a single prompt, the system divides the workflow across multiple specialized agents. This makes the reasoning process more structured and easier to extend.
+### Structured Outputs
+The API always returns structured JSON rather than free-form text.
 
-Structured Outputs
+### Retrieval Augmentation
+A retrieval layer provides contextual information before generating responses.
 
-All responses are returned as JSON rather than plain text. This allows the system to integrate easily with dashboards, data pipelines, or other backend services.
+### Modular Architecture
+Agents, services, and orchestration layers are separated to keep the system scalable and maintainable.
 
-Retrieval-Augmented Generation
+---
 
-A vector database is used to retrieve relevant contextual information before generating responses. This improves the accuracy and usefulness of the outputs.
+# Possible Future Improvements
 
-Modular Architecture
+Some directions for future development include:
 
-The project separates agents, services, and orchestration layers. This makes the codebase easier to maintain and extend as the system grows.
+- Dynamic agent planning
+- Tool-using agents
+- Streaming LLM responses
+- Persistent vector databases
+- Multi-tenant architecture
+- Observability and tracing
+- Production deployment pipelines
 
-Possible Future Improvements
+---
 
-Some directions for further development include:
+# Technologies Used
 
-Dynamic agent planning
+- Python
+- FastAPI
+- Groq LLM
+- Retrieval Augmented Generation (RAG)
+- Vector embeddings
+- Docker
 
-Tool-using agents
+---
 
-Conversation memory
+# Author
 
-Interactive frontend dashboard
-
-Distributed task execution with message queyes
-
-Author
-
-Kandyana Venkata Sai Dinesh
+Dinesh Kandyana
